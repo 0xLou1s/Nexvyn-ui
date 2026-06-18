@@ -1,0 +1,133 @@
+'use client'
+
+import { useState, useMemo } from 'react'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+import { ComponentCard } from '@/components/showcase/component-card'
+import { AnimatedTitle } from '@/components/showcase/animated-title'
+import { COMPONENTS, COLLECTIONS } from '@/lib/components-registry'
+import { cn } from '@/lib/utils'
+
+function SortIcon({ className, animate }: { className?: string; animate?: boolean }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className={className} aria-hidden>
+      <path
+        d="M2 4h12"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4 8h8"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        style={{
+          transform: animate ? 'translateX(4px)' : 'translateX(0)',
+          transition: 'transform 0.2s cubic-bezier(.25,.46,.45,.94)',
+        }}
+      />
+      <path
+        d="M6 12h4"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        style={{
+          transform: animate ? 'translateX(6px)' : 'translateX(0)',
+          transition: 'transform 0.2s cubic-bezier(.25,.46,.45,.94) 0.08s',
+        }}
+      />
+    </svg>
+  )
+}
+
+export default function ComponentsPage() {
+  const [sortByCategory, setSortByCategory] = useState(false)
+  const [sortAnimating, setSortAnimating] = useState(false)
+
+  const sorted = useMemo(() => {
+    if (!sortByCategory) return COMPONENTS
+    return [...COMPONENTS].sort((a, b) => a.collection.localeCompare(b.collection))
+  }, [sortByCategory])
+
+  const grouped = useMemo(() => {
+    if (!sortByCategory) return null
+    const map = new Map<string, typeof COMPONENTS>()
+    for (const item of sorted) {
+      const list = map.get(item.collection) ?? []
+      list.push(item)
+      map.set(item.collection, list)
+    }
+    return map
+  }, [sorted, sortByCategory])
+
+  return (
+    <div
+      className="min-h-screen w-full font-sans flex flex-col"
+      style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
+    >
+      <Header />
+
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pb-16 pt-8">
+        <div className="mb-8 flex items-center justify-between">
+          <AnimatedTitle
+            title="Components"
+            className="text-2xl sm:text-3xl font-normal tracking-tight"
+          />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setSortAnimating(true)
+                setSortByCategory((v) => !v)
+                setTimeout(() => setSortAnimating(false), 300)
+              }}
+              className={cn(
+                'inline-flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground gap-2',
+                sortByCategory ? 'opacity-100' : 'opacity-40 hover:opacity-70',
+              )}
+              title="Sort by category"
+            >
+              <SortIcon animate={sortAnimating} />
+              <span className="hidden sm:inline">Sort</span>
+            </button>
+            <span
+              className="text-2xl sm:text-3xl font-normal tracking-tight tabular-nums"
+              style={{ color: 'var(--color-fg)' }}
+            >
+              {COMPONENTS.length}
+            </span>
+          </div>
+        </div>
+
+        {sortByCategory && grouped ? (
+          <div className="space-y-10">
+            {Array.from(grouped.entries()).map(([collection, items]) => (
+              <div key={collection}>
+                <div className="mb-4">
+                  <AnimatedTitle
+                    title={collection.charAt(0).toUpperCase() + collection.slice(1)}
+                    right={`${items.length}`}
+                    className="text-lg font-normal tracking-tight"
+                  />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {items.map((item) => (
+                    <ComponentCard key={item.id} item={item} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {sorted.map((item) => (
+              <ComponentCard key={item.id} item={item} />
+            ))}
+          </div>
+        )}
+      </main>
+
+      <Footer />
+    </div>
+  )
+}
