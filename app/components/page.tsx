@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 
 function SortIcon({ className, animate }: { className?: string; animate?: boolean }) {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className={className} aria-hidden>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={className} aria-hidden>
       <path
         d="M2 4h12"
         stroke="currentColor"
@@ -82,17 +82,17 @@ export default function ComponentsPage() {
                 setTimeout(() => setSortAnimating(false), 300)
               }}
               className={cn(
-                'inline-flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground gap-2',
-                sortByCategory ? 'opacity-100' : 'opacity-40 hover:opacity-70',
+                'inline-flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors hover:bg-(--color-surface) text-(--color-fg) hover:text-(--color-fg) outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) gap-2',
+                sortByCategory ? 'opacity-100' : 'opacity-40 hover:opacity-75',
               )}
               title="Sort by category"
             >
-              <SortIcon animate={sortAnimating} />
+              <SortIcon className="size-4.5" animate={sortAnimating} />
               <span className="hidden sm:inline">Sort</span>
             </button>
             <span
-              className="text-2xl sm:text-3xl font-normal tracking-tight tabular-nums"
-              style={{ color: 'var(--color-fg)' }}
+              className="text-xl sm:text-2xl font-normal tracking-tight tabular-nums ml-2 opacity-60"
+              style={{ color: 'var(--color-muted)' }}
             >
               {COMPONENTS.length}
             </span>

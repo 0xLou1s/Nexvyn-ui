@@ -5,6 +5,8 @@ import { GooeyFilter } from '@/components/ui/gooey-filter'
 import { PixelTrail } from '@/components/ui/pixel-trail'
 import { useScreenSize } from '@/hooks/use-screen-size'
 
+import Link from 'next/link'
+
 export default function HomePage() {
   const screenSize = useScreenSize()
 
@@ -53,13 +55,13 @@ export default function HomePage() {
           </p>
 
         <div className="w-full flex items-center justify-center gap-3 mt-8 sm:mt-10">
-          <a
-            href="/v1"
-            className="inline-flex items-center h-10 px-5 rounded-md bg-(--color-fg) text-(--color-bg) text-sm font-medium hover:opacity-90 active:scale-[0.97] transition-opacity duration-150"
+          <Link
+            href="/components"
+            className="inline-flex items-center h-10 px-5 rounded-md bg-(--color-fg) text-(--color-bg) text-sm font-medium active:scale-[0.97] duration-150"
             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
           >
             components
-          </a>
+          </Link>
         </div>
       </section>
     </div>
