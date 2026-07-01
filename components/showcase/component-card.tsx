@@ -28,15 +28,15 @@ function SparkleIcon({ className }: { className?: string }) {
 
 export function ComponentCard({ item }: { item: ComponentItem }) {
   return (
-    <Link href={getComponentHref(item.id)} className="block">
+    <Link href={getComponentHref(item.id)} className="block w-[280px] shrink-0">
       <div
         className={cn(
-          'relative w-full rounded-2xl p-1',
+          'relative w-full rounded-2xl p-1 border border-[0.5px] border-(--color-border) hover:border-(--color-accent) transition-colors duration-200',
           'shadow-[0_12px_42px_rgba(0,0,0,0.09)]',
         )}
         style={{ backgroundColor: 'var(--color-bg)' }}
       >
-        <div className="relative aspect-square overflow-hidden rounded-xl bg-[#3a3a3a]">
+        <div className="relative h-[280px] w-full overflow-hidden rounded-xl bg-[#3a3a3a]">
           <SparkleIcon className="pointer-events-none absolute bottom-[26%] right-[18%] text-white/85" />
         </div>
 

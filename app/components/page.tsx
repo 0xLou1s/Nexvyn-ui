@@ -110,7 +110,7 @@ export default function ComponentsPage() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                <div className="flex flex-wrap gap-4">
                   {items.map((item) => (
                     <ComponentCard key={item.id} item={item} />
                   ))}
@@ -119,7 +119,7 @@ export default function ComponentsPage() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="flex flex-wrap gap-4">
             {sorted.map((item) => (
               <ComponentCard key={item.id} item={item} />
             ))}

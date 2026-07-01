@@ -283,7 +283,7 @@ function SidebarNav() {
 
 export function Sidebar() {
   const pathname = usePathname()
-  const isLandingPage = pathname === '/'
+  const shouldShowSidebar = pathname.startsWith('/components/') && pathname !== '/components'
   const { showSidebar, toggleSidebar, setShowSidebar } = useSidebar()
   const screenSize = useScreenSize()
   const containerRef = useClickOutside<HTMLDivElement>(() => {
@@ -292,12 +292,13 @@ export function Sidebar() {
 
   const isExpanded = showSidebar || screenSize.lessThan('md')
 
+  if (!shouldShowSidebar) return null
+
   return (
     <div ref={containerRef}>
-      {!isLandingPage && (
-        <motion.button
-          type="button"
-          initial={false}
+      <motion.button
+        type="button"
+        initial={false}
           animate={{
             x: isExpanded ? 10 : 0,
             y: isExpanded ? -10 : 0,
@@ -312,7 +313,6 @@ export function Sidebar() {
         >
           <SidebarToggleIcon showSidebar={showSidebar} />
         </motion.button>
-      )}
 
       <motion.aside
         initial={false}
