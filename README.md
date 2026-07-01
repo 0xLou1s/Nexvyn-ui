@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexvyn UI
 
-## Getting Started
+Animated UI components with spring physics and fluid interactions. Built on shadcn/ui and Radix primitives.
 
-First, run the development server:
+Live docs & demos | Browse components
+
+## Install
+
+Add the registry to your project:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bunx shadcn@latest registry add @nexvyn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then install any component:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bunx shadcn@latest add @nexvyn/bounce-sidebar
+bunx shadcn@latest add @nexvyn/elastic-dot
+bunx shadcn@latest add @nexvyn/blossom-color-picker
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Or install directly without adding the registry:
 
-## Learn More
+```bash
+bunx shadcn@latest add https://ui.nexvyn.dev/r/bounce-sidebar.json
+```
 
-To learn more about Next.js, take a look at the following resources:
+Dependencies resolve automatically. Motion animations require the `motion` package.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What makes these different
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Motion as information** - transitions make state changes legible, nothing moves for decoration
+- **Spring physics** - springs replace fixed durations, adapting naturally to interruption
+- **Drop-in compatible** - your existing shadcn theme and tokens apply automatically
 
-## Deploy on Vercel
+## Tech stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js 16 + React 19
+- Bun
+- Tailwind CSS v4
+- Motion (Framer Motion)
+- Radix UI primitives
+- shadcn/ui registry protocol
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT © Nexvyn
