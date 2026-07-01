@@ -5,39 +5,17 @@ import { cn } from '@/lib/utils'
 import type { ComponentItem } from '@/lib/components-registry'
 import { getComponentHref } from '@/lib/components-registry'
 
-function SparkleIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden
-    >
-      <path
-        d="M12 2.5L13.4 10.1L21 11.5L13.4 12.9L12 20.5L10.6 12.9L3 11.5L10.6 10.1L12 2.5Z"
-        stroke="currentColor"
-        strokeWidth="1.25"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
+import { ComponentPreview } from './component-preview'
 
 export function ComponentCard({ item }: { item: ComponentItem }) {
   return (
     <Link href={getComponentHref(item.id)} className="block w-[280px] shrink-0">
       <div
-        className={cn(
-          'relative w-full rounded-2xl p-1 border border-[0.5px] border-(--color-border) hover:border-(--color-accent) transition-colors duration-200',
-          'shadow-[0_12px_42px_rgba(0,0,0,0.09)]',
-        )}
+        className="relative w-full rounded-2xl p-1 border border-[0.5px] border-(--color-border) hover:border-(--color-accent) transition-colors duration-200"
         style={{ backgroundColor: 'var(--color-bg)' }}
       >
         <div className="relative h-[280px] w-full overflow-hidden rounded-xl bg-[#3a3a3a]">
-          <SparkleIcon className="pointer-events-none absolute bottom-[26%] right-[18%] text-white/85" />
+          <ComponentPreview item={item} />
         </div>
 
         <div

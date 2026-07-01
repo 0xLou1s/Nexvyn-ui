@@ -60,73 +60,12 @@ function MediaPreview({ thumbnail, videoSrc }: { thumbnail: string; videoSrc: st
   )
 }
 
+import { COMPONENT_MEDIA } from '@/lib/component-media'
+
 export function ComponentPreview({ item }: { item: ComponentItem }) {
-  if (item.videoSrc && item.thumbnail) {
-    return <MediaPreview thumbnail={item.thumbnail} videoSrc={item.videoSrc} />
-  }
+  const media = COMPONENT_MEDIA[item.id]
+  const thumbnail = media?.thumbnail || item.thumbnail || `/thumbnails/${item.id}.png`
+  const videoSrc = media?.videoSrc || item.videoSrc || `/videos/${item.id}.mp4`
 
-  if (item.preview?.endsWith('.mp4')) {
-    return (
-      <video
-        className="size-full object-cover"
-        src={item.preview}
-        autoPlay
-        loop
-        playsInline
-        muted
-      />
-    )
-  }
-
-  switch (item.previewType) {
-    case 'icons':
-      return (
-        <div className="grid size-full grid-cols-5 gap-1.5 bg-neutral-100 p-3">
-          {['🧑', '🌸', '☀️', '🍷', '🐤', '🐤', '🍞', '⭐', '🐟', '🐸', '🐤', '🐻', '🗑️', '🏠', '🍬', '☕', '🍬', '🍺', '🎁', '🍟'].map((icon, index) => (
-            <div
-              key={index}
-              className="flex aspect-square items-center justify-center rounded-md bg-white text-base shadow-sm"
-            >
-              {icon}
-            </div>
-          ))}
-        </div>
-      )
-    case 'pixels':
-      return (
-        <div className="relative size-full bg-neutral-950">
-          {Array.from({ length: 24 }).map((_, index) => (
-            <span
-              key={index}
-              className="absolute size-2 rounded-[1px] bg-white/70"
-              style={{
-                left: `${12 + (index % 6) * 14}%`,
-                top: `${18 + Math.floor(index / 6) * 18}%`,
-                opacity: 0.3 + (index % 5) * 0.12,
-              }}
-            />
-          ))}
-        </div>
-      )
-    case 'toggle':
-      return (
-        <div className="flex size-full items-center justify-center bg-neutral-100">
-          <div className="flex h-8 w-14 items-center rounded-full bg-neutral-900 px-1">
-            <div className="size-6 rounded-full bg-white shadow-sm" />
-          </div>
-        </div>
-      )
-    default:
-      return (
-        <div className="flex size-full flex-col items-center justify-center gap-2 bg-neutral-100 p-4">
-          <LivePreview item={item} />
-          {!['bounce-sidebar'].includes(item.id) && (
-            <>
-              <div className="h-1 w-10 rounded-full bg-sky-500" />
-              <p className="text-center text-[10px] font-medium text-neutral-500">{item.name}</p>
-            </>
-          )}
-        </div>
-      )
-  }
+  return <MediaPreview thumbnail={thumbnail} videoSrc={videoSrc} />
 }
