@@ -307,17 +307,30 @@ export function Sidebar() {
 
   return (
     <div ref={containerRef} className="contents">
+      <AnimatePresence>
+        {showSidebar && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-19 bg-black/50 md:hidden"
+            onClick={() => setShowSidebar(false)}
+          />
+        )}
+      </AnimatePresence>
+
       <motion.button
         type="button"
         initial={false}
         animate={{
-          x: isExpanded ? 10 : 0,
-          y: isExpanded ? -10 : 0,
+          x: isExpanded && !screenSize.lessThan('md') ? 10 : 0,
+          y: isExpanded && !screenSize.lessThan('md') ? -10 : 0,
           width: isExpanded ? 42 : 32,
           height: isExpanded ? 42 : 32,
         }}
         transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-        className="bg-background fixed left-5 top-5 z-21 cursor-pointer rounded-xl flex items-center justify-center"
+        className="bg-background fixed left-3 top-3 sm:left-5 sm:top-5 z-21 cursor-pointer rounded-xl flex items-center justify-center"
         onClick={toggleSidebar}
         aria-label="Toggle sidebar"
       >
@@ -333,7 +346,7 @@ export function Sidebar() {
           opacity: showSidebar ? 1 : 0,
         }}
         transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-        className="pointer-events-auto fixed left-0 top-0 z-20 h-screen w-80 p-2"
+        className="pointer-events-auto fixed left-0 top-0 z-20 h-dvh w-[85vw] sm:w-80 p-2"
         aria-hidden={!showSidebar}
         style={{ pointerEvents: showSidebar ? 'auto' : 'none' }}
       >

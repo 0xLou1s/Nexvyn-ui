@@ -16,6 +16,7 @@ import CodeDrawer from './code-drawer'
 import { StarsCount } from '@/components/detail/stars-count'
 import { InstallCommandBox } from './install-command-box'
 import { FeedbackModal } from './feedback-modal'
+import { useScreenSize } from '@/hooks/use-screen-size'
 
 function CopyButton({
   value,
@@ -77,6 +78,8 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const router = useRouter()
   const item = activeComponent(pathname)
   const command = item ? installCommand(item) : null
+  const screenSize = useScreenSize()
+  const isMobile = screenSize.lessThan('md')
 
   const [codeOpen, setCodeOpen] = useState(false)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
@@ -115,7 +118,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
       <motion.div
         initial={false}
         animate={{
-          right: open ? INFO_SPACE + 12 : 12,
+          right: isMobile ? 12 : open ? INFO_SPACE + 12 : 12,
         }}
         transition={{ type: 'spring', stiffness: 280, damping: 32 }}
         className="detail-elevated-pill pointer-events-auto absolute top-3 z-50 flex items-center gap-0.5 rounded-2xl p-1"
@@ -187,7 +190,10 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         initial={false}
         animate={{ x: open ? 0 : PANEL_SHIFT }}
         transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-        className="detail-panel pointer-events-auto relative flex h-full w-140 flex-col overflow-hidden rounded-2xl"
+        className={cn(
+          'detail-panel pointer-events-auto flex h-full flex-col overflow-hidden rounded-2xl',
+          isMobile ? 'fixed inset-y-0 right-0 w-full z-40' : 'relative w-full sm:w-140',
+        )}
         style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
       >
         <div
@@ -197,7 +203,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           }}
         />
 
-        <div className="no-scrollbar flex flex-1 flex-col gap-12 overflow-y-auto p-8 pt-60 text-left">
+        <div className="no-scrollbar flex flex-1 flex-col gap-8 sm:gap-12 overflow-y-auto p-4 sm:p-6 md:p-8 pt-48 sm:pt-72 text-left">
           <div className="flex flex-col gap-1 text-left">
             <h1 className="text-3xl font-semibold tracking-tight text-(--color-fg)">
               {item?.name ?? 'Component'}

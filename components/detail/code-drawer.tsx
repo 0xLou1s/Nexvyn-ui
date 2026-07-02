@@ -187,7 +187,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
         }}
       />
 
-      <div className="flex-1 overflow-y-auto px-8 py-6 select-text no-scrollbar">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-8 py-6 select-text no-scrollbar">
         <pre
           className="no-scrollbar overflow-x-auto text-[13.5px] font-mono leading-relaxed bg-transparent border-0 p-0"
           style={{ color: 'var(--color-fg)' }}

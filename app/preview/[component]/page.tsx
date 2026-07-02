@@ -43,26 +43,26 @@ export default function PreviewPage() {
 
   return (
     <div
-      className="detail-page h-screen overflow-hidden p-2 font-sans"
+      className="detail-page h-dvh overflow-hidden p-2 font-sans"
       style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
     >
       <div className="relative h-full">
-        <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-4">
+        <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 sm:px-6 py-4">
           <Link
             href={`/components/${component.id}`}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-(--color-muted) hover:text-(--color-fg) transition-colors rounded-md px-2 py-1 -ml-2"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back
+            <span className="hidden sm:inline">Back</span>
           </Link>
           <Link
             href="/"
-            className="text-2xl sm:text-3xl font-semibold tracking-tight no-underline hover:opacity-80 transition-opacity"
-            style={{ color: 'var(--color-accent)' }}
+            className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight no-underline hover:opacity-80 transition-opacity"
+            style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
           >
             Nexvyn/Ui (...)
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <a
               href="https://github.com/Nexvyn/Nexvyn-ui"
               target="_blank"

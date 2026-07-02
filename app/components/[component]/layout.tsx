@@ -10,7 +10,7 @@ export default function ComponentLayout({ children }: { children: React.ReactNod
     <SidebarProvider>
       <Sidebar />
       <div
-        className="h-screen overflow-hidden p-2 font-sans"
+        className="h-dvh overflow-hidden p-2 font-sans"
         style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
       >
         <DetailSidebarShell>{children}</DetailSidebarShell>

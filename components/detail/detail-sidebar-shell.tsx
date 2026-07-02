@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -9,6 +9,7 @@ import ComponentColorBar from './component-color-bar'
 import { InstallCommandBox } from './install-command-box'
 import { DescriptionPanel } from './description-panel'
 import { PreviewControlProvider } from './preview-controls'
+import { useScreenSize } from '@/hooks/use-screen-size'
 
 const INFO_SPACE = 576
 
@@ -16,6 +17,8 @@ export default function DetailSidebarShell({ children }: { children: React.React
   const [infoOpen, setInfoOpen] = useState(false)
   const pathname = usePathname()
   const item = activeComponent(pathname)
+  const screenSize = useScreenSize()
+  const isMobile = screenSize.lessThan('md')
 
   return (
     <PreviewControlProvider>
@@ -25,16 +28,16 @@ export default function DetailSidebarShell({ children }: { children: React.React
         <motion.div
           initial={false}
           animate={{
-            paddingRight: infoOpen ? INFO_SPACE : 0,
+            paddingRight: infoOpen && !isMobile ? INFO_SPACE : 0,
           }}
           transition={{ type: 'spring', stiffness: 280, damping: 32 }}
           className="h-full"
         >
-          <div className="detail-preview-card relative z-0 h-full rounded-[45px] p-4">
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
+          <div className="detail-preview-card relative z-0 h-full rounded-[45px] p-4 pt-16 sm:pt-20">
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 pointer-events-auto pl-12 sm:pl-0">
               <Link
                 href="/components"
-                className="text-3xl sm:text-4xl font-normal no-underline hover:opacity-80 transition-opacity"
+                className="text-xl sm:text-2xl md:text-4xl font-normal no-underline hover:opacity-80 transition-opacity"
                 style={{
                   fontFamily: 'var(--font-handwriting), cursive',
                   color: 'var(--color-accent)',
@@ -45,12 +48,12 @@ export default function DetailSidebarShell({ children }: { children: React.React
             </div>
             {children}
 
-            <div className="absolute bottom-5 right-5 z-10 pointer-events-auto">
+            <div className="absolute bottom-5 right-5 z-10 pointer-events-auto hidden sm:block">
               <ComponentColorBar />
             </div>
 
             {item?.registry && (
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 max-w-sm sm:max-w-md w-full pointer-events-auto">
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 max-w-[calc(100%-2.5rem)] sm:max-w-sm md:max-w-md w-full pointer-events-auto">
                 <InstallCommandBox registry={item.registry} />
               </div>
             )}

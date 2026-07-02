@@ -24,7 +24,7 @@ export default function HomePage() {
 
   return (
     <div
-      className="h-screen w-full font-sans overflow-hidden flex flex-col"
+      className="h-dvh w-full font-sans overflow-hidden flex flex-col"
       style={{
         backgroundColor: 'var(--color-bg)',
         color: 'var(--color-fg)',

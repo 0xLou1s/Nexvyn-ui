@@ -64,7 +64,7 @@ export default function ComponentsPage() {
       <Header />
 
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pb-16 pt-8">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-2">
           <AnimatedTitle
             title="Components"
             className="text-2xl sm:text-3xl font-normal tracking-tight"

@@ -21,7 +21,7 @@ export function ScrollFade({
       aria-hidden
       data-side={side}
       className={cn(
-        'pointer-events-none absolute inset-x-0 h-[8.5rem] w-full',
+        'pointer-events-none absolute inset-x-0 h-[5rem] sm:h-[8.5rem] w-full',
         side === 'top' ? 'top-0' : 'bottom-0',
         className,
       )}

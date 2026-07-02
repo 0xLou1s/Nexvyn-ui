@@ -21,7 +21,7 @@ export default function NotFoundPage() {
           404
         </h1>
         <p className="text-base text-[var(--color-fg)] opacity-80 mb-8">This page has vanished.</p>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           <Link
             href="/components"
             className="inline-flex items-center h-10 px-5 rounded-md bg-(--color-accent) text-(--color-bg) text-xs font-medium hover:opacity-90 active:scale-[0.96] transition-[opacity,transform] duration-150 cursor-pointer"
