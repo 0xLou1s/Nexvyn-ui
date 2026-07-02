@@ -11,6 +11,8 @@ const caveat = Caveat({
   display: 'swap',
 })
 
+const FAVICON_VERSION = Date.now()
+
 export const metadata = {
   title: {
     default: 'Nexvyn/UI',
@@ -23,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={caveat.variable} suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href={`/favicon.svg?v=${FAVICON_VERSION}`} type="image/svg+xml" />
         <Script
           id="theme-setup"
           strategy="beforeInteractive"

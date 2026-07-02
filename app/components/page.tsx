@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
+// import { Footer } from '@/components/layout/footer'
 import { ComponentCard } from '@/components/showcase/component-card'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
 import { COMPONENTS, COLLECTIONS } from '@/lib/components-registry'
@@ -63,7 +63,7 @@ export default function ComponentsPage() {
     >
       <Header />
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pb-16 pt-8">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-12 pt-4 pb-2 md:pt-12 md:pb-4">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-2">
           <AnimatedTitle
             title="Components"
@@ -122,7 +122,7 @@ export default function ComponentsPage() {
         )}
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

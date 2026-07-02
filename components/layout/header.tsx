@@ -26,11 +26,6 @@ export function Header() {
           Nexvyn/Ui (...)
         </Link>
       </div>
-      <div className="hidden md:flex flex-1 justify-center">
-        <span className="font-medium" style={{ color: 'var(--color-fg)' }}>
-          Welcome
-        </span>
-      </div>
       <div className="flex-1 flex justify-end items-center gap-2">
         <div
           className="relative"
