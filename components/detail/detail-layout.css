@@ -112,6 +112,12 @@
   margin: 0;
   border-radius: 0.75rem;
   border: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.detail-page .detail-code-block::-webkit-scrollbar {
+  display: none;
 }
 
 .detail-page .detail-code-usage {
@@ -174,7 +180,7 @@
   line-height: 1.65;
   background-color: var(--detail-code-bg);
   color: var(--detail-code-fg);
-  border: 0.5px solid var(--detail-code-border);
+  border: none;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -275,4 +281,9 @@
   .detail-page .detail-swatch:active {
     transform: none;
   }
+}
+
+.sidebar-nav-item {
+  position: relative;
+  overflow: visible !important;
 }

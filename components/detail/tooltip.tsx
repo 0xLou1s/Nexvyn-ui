@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '@/lib/utils'
 
@@ -24,9 +25,24 @@ function Tooltip({
   className,
 }: TooltipProps) {
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
+  const [computedSide, setComputedSide] = useState<TooltipSide>(side)
+  
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const tooltipRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    setComputedSide(side)
+  }, [side])
+
   const show = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => setOpen(true), delayDuration)
   }
 
@@ -35,17 +51,111 @@ function Tooltip({
     setOpen(false)
   }
 
+  const handlePointerDown = () => {
+    hide()
+  }
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
   }, [])
 
-  const position = {
-    top: { y: -sideOffset, x: 0, originY: 1 },
-    bottom: { y: sideOffset, x: 0, originY: 0 },
-    left: { x: -sideOffset, y: 0, originX: 1 },
-    right: { x: sideOffset, y: 0, originX: 0 },
+  const updateCoords = useCallback(() => {
+    if (!triggerRef.current) return
+    const rect = triggerRef.current.getBoundingClientRect()
+    
+    let tooltipW = 100
+    let tooltipH = 32
+    if (tooltipRef.current) {
+      const tooltipRect = tooltipRef.current.getBoundingClientRect()
+      tooltipW = tooltipRect.width
+      tooltipH = tooltipRect.height
+    }
+
+    let newSide = side
+    const spaceTop = rect.top
+    const spaceBottom = window.innerHeight - rect.bottom
+    const spaceLeft = rect.left
+    const spaceRight = window.innerWidth - rect.right
+
+    if (side === 'top' && spaceTop < tooltipH + sideOffset && spaceBottom > spaceTop) {
+      newSide = 'bottom'
+    } else if (side === 'bottom' && spaceBottom < tooltipH + sideOffset && spaceTop > spaceBottom) {
+      newSide = 'top'
+    } else if (side === 'left' && spaceLeft < tooltipW + sideOffset && spaceRight > spaceLeft) {
+      newSide = 'right'
+    } else if (side === 'right' && spaceRight < tooltipW + sideOffset && spaceLeft > spaceRight) {
+      newSide = 'left'
+    }
+
+    setComputedSide(newSide)
+
+    let top = 0
+    let left = 0
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop
+    const scrollX = window.pageXOffset || document.documentElement.scrollLeft
+
+    if (newSide === 'top') {
+      top = rect.top + scrollY - sideOffset
+      left = rect.left + scrollX + rect.width / 2
+    } else if (newSide === 'bottom') {
+      top = rect.bottom + scrollY + sideOffset
+      left = rect.left + scrollX + rect.width / 2
+    } else if (newSide === 'left') {
+      top = rect.top + scrollY + rect.height / 2
+      left = rect.left + scrollX - sideOffset
+    } else if (newSide === 'right') {
+      top = rect.top + scrollY + rect.height / 2
+      left = rect.left + scrollX + rect.width + sideOffset
+    }
+
+    setCoords({ top, left })
+  }, [side, sideOffset])
+
+  const setTooltipRef = useCallback((node: HTMLDivElement | null) => {
+    tooltipRef.current = node
+    if (node) {
+      requestAnimationFrame(() => {
+        updateCoords()
+      })
+    }
+  }, [updateCoords])
+
+  useEffect(() => {
+    if (!open) return
+
+    updateCoords()
+    window.addEventListener('resize', updateCoords)
+    window.addEventListener('scroll', updateCoords, true)
+
+    return () => {
+      window.removeEventListener('resize', updateCoords)
+      window.removeEventListener('scroll', updateCoords, true)
+    }
+  }, [open, updateCoords])
+
+  const positionStyles = () => {
+    if (!coords) return { opacity: 0, position: 'absolute' as const }
+    
+    let transform = ''
+    if (computedSide === 'top') {
+      transform = 'translate(-50%, -100%)'
+    } else if (computedSide === 'bottom') {
+      transform = 'translate(-50%, 0)'
+    } else if (computedSide === 'left') {
+      transform = 'translate(-100%, -50%)'
+    } else if (computedSide === 'right') {
+      transform = 'translate(0, -50%)'
+    }
+
+    return {
+      position: 'absolute' as const,
+      top: `${coords.top}px`,
+      left: `${coords.left}px`,
+      transform,
+      zIndex: 9999,
+    }
   }
 
   const slide = {
@@ -57,34 +167,37 @@ function Tooltip({
 
   return (
     <div
+      ref={triggerRef}
       className="relative inline-flex"
       onMouseEnter={show}
       onMouseLeave={hide}
       onFocus={show}
       onBlur={hide}
+      onPointerDown={handlePointerDown}
     >
       {children}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, ...slide[side] }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            exit={{ opacity: 0, ...slide[side] }}
-            transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className={cn(
-              'absolute z-50 pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
-              'bg-(--color-fg) text-(--color-bg)',
-              side === 'top' && 'bottom-full left-1/2 -translate-x-1/2 mb-2',
-              side === 'bottom' && 'top-full left-1/2 -translate-x-1/2 mt-2',
-              side === 'left' && 'right-full top-1/2 -translate-y-1/2 mr-2',
-              side === 'right' && 'left-full top-1/2 -translate-y-1/2 ml-2',
-              className,
-            )}
-          >
-            {content}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mounted && createPortal(
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              ref={setTooltipRef}
+              initial={{ opacity: 0, ...slide[computedSide] }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, ...slide[computedSide] }}
+              transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              style={positionStyles()}
+              className={cn(
+                'pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
+                'bg-(--color-fg) text-(--color-bg) shadow-md',
+                className,
+              )}
+            >
+              {content}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   )
 }

@@ -142,10 +142,10 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
       transition={{ type: 'spring', stiffness: 280, damping: 32 }}
       className={cn(
         'absolute inset-x-0 bottom-0 z-10 flex h-full flex-col rounded-t-3xl',
-        'border border-(--color-border) shadow-2xl',
+        'border-0 shadow-2xl',
       )}
       style={{
-        backgroundColor: 'var(--color-bg)',
+        backgroundColor: 'var(--detail-code-bg)',
       }}
     >
       <div
@@ -183,7 +183,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
       <div
         className="pointer-events-none absolute inset-x-0 top-15 z-20 h-10"
         style={{
-          background: 'linear-gradient(to bottom, var(--color-bg) 30%, transparent)',
+          background: 'linear-gradient(to bottom, var(--detail-code-bg) 30%, transparent)',
         }}
       />
 
@@ -205,7 +205,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-16 rounded-b-3xl"
         style={{
-          background: 'linear-gradient(to top, var(--color-bg) 30%, transparent)',
+          background: 'linear-gradient(to top, var(--detail-code-bg) 30%, transparent)',
         }}
       />
     </motion.div>
