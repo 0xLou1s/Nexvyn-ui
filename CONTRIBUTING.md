@@ -29,7 +29,7 @@ Create a metadata file in `components/ui/Doc/`:
 components/ui/Doc/my-component-metadata.ts
 ```
 
-Export a `ComponentItem` object with id, name, collection, description, props, and usage.
+Export a `ComponentItem` object with id, name, collection, description, props, usage, and optional credits.
 
 ### 3. Add a preview (optional)
 
@@ -77,13 +77,31 @@ Add an entry to `registry.json` for shadcn CLI installation:
 
 Then run `npm run build:registry` to generate the `public/r/my-component.json` file automatically.
 
-### 7. Test locally
+### 7. Add to source map
+
+Add to `app/api/source/route.ts` in the `SOURCE_MAP` object so the code drawer can serve the source:
+
+```ts
+const SOURCE_MAP: Record<string, string[]> = {
+  'my-component': ['components', 'ui', 'my-component.tsx'],
+}
+```
+
+### 8. Set collection category
+
+Set the `collection` field in metadata to one of: `'navigation'`, `'inputs'`, `'effects'`, `'preloaders'`, `'scroll'`. Empty categories are automatically hidden from the sidebar.
+
+### 9. Test locally
 
 Run `npm run dev` and navigate to `/components/my-component` to verify it works.
 
-### 8. Format code
+### 10. Format and lint
 
-Run `npm run format` before committing to ensure consistent formatting.
+```bash
+npm run format       # Format code with Prettier
+npm run lint         # Run ESLint
+npm run build        # Verify production build
+```
 
 ---
 
@@ -96,6 +114,15 @@ Run `npm run format` before committing to ensure consistent formatting.
 - No comments in component files
 - Add `"use client"` directive for client components
 - Run `npm run format` before committing
+- Respect `prefers-reduced-motion` for accessibility
+
+## Originality
+
+All components must be original implementations. If your work was inspired by something, add a `credits` field to your metadata:
+
+```ts
+credits: 'Inspired by https://example.com'
+```
 
 ---
 

@@ -16,6 +16,7 @@ Then install any component:
 
 ```bash
 bunx shadcn@latest add @nexvyn/bounce-sidebar
+bunx shadcn@latest add @nexvyn/goo-dropdown
 ```
 
 Or install directly without adding the registry:
@@ -31,6 +32,7 @@ Dependencies resolve automatically. Motion animations require the `motion` packa
 - **Motion as information** - transitions make state changes legible, nothing moves for decoration
 - **Spring physics** - springs replace fixed durations, adapting naturally to interruption
 - **Drop-in compatible** - your existing shadcn theme and tokens apply automatically
+- **Original implementations** - all components built from scratch with no copied code
 
 ## Tech stack
 
